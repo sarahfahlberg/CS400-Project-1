@@ -2,23 +2,13 @@ import java.util.NoSuchElementException;
 
 public class BankATM {
 	private HashTableMap<String, User> userHashTable;
-	private int hashedBankPassword;
 	
 	/**
-	 * Creates a new BankATM with a manager’s password that can be used to manage all users
+	 * Creates a new BankATM
 	 * @param bankPassword
 	 */
-	public BankATM(String bankPassword) {
-		hashedBankPassword = hashBankPassword(bankPassword);
+	public BankATM() {
 		userHashTable = new HashTableMap<>();
-	}
-	/**
-	 * Hashes the bank password
-	 * @param bankPassword
-	 * @return hashed version of the bankPassword for security
-	 */
-	private int hashBankPassword(String bankPassword) {
-		
 	}
 	
 	/**
@@ -59,27 +49,16 @@ public class BankATM {
 	 * Returns if the bank system contains any users or not
 	 * @param bankPassword
 	 * @return true if there are no users in the bank system
-	 * @throws IllegalArgumentException if bank password is incorrect
 	 */
-	public boolean isEmpty(String bankPassword) throws IllegalArgumentException {
+	public boolean isEmpty() {
 		
 	}
 	/**
 	 * Number of users in the bank system
 	 * @param bankPassword
 	 * @return number of users in the bank system
-	 * @throws IllegalArgumentException if bank password is incorrect
 	 */
-	public int size(String bankPassword) throws IllegalArgumentException {
-		
-	}
-	
-	/**
-	 * Clears all of the users currently in the bank
-	 * @param bankPassword
-	 * @throws IllegalArgumentException if bank password is incorrect
-	 */
-	public void clearAllUsers(String bankPassword) throws IllegalArgumentException {
+	public int size() {
 		
 	}
 	
