@@ -26,7 +26,10 @@ public class Account {
 	 * @throws IllegalArgumentException if balance overflows
 	 */
 	public void deposit(double amount) throws IllegalArgumentException {
-		
+		if (balance + amount >= Double.MAX_VALUE)
+			throw new IllegalArgumentException("Account balance overflow: please deposit "
+					+ "your money to a different account");
+		balance += amount;
 	}
 	
 	/**
@@ -35,8 +38,12 @@ public class Account {
 	 * @throws IllegalArgumentException if amount being withdrawn is more than is currently in 
 	 * the account
 	 */
-	public void withdraw(double amount) throws IllegalArgumentException {
-		
+	public double withdraw(double amount) throws IllegalArgumentException {
+		if (amount > balance)
+			throw new IllegalArgumentException("The amount you are trying to withdraw exceeds your "
+					+ "balance, please withdraw a smaller amount or from a different account");
+		balance -= amount;
+		return amount;
 	}
 	
 	/**

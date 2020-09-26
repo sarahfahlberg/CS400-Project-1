@@ -17,8 +17,8 @@ public class BankATM {
 	 * @param userPassword
 	 * @throws IllegalArgumentException if user with that username already exists
 	 */
-	public void addNewUser(String username, String userPassword) throws IllegalArgumentException {
-		
+	public void addNewUser(String username, int hashedPassword) throws IllegalArgumentException {
+		userHashTable.put(username, new User(username, hashedPassword));
 	}
 	
 	/**
@@ -29,8 +29,16 @@ public class BankATM {
 	 * @throws NoSuchElementException if a user with that username is not found or if password is
 	 * incorrect
 	 */
-	public User removeUser(String username, String userPassword) throws NoSuchElementException {
-		
+	public User removeUser(String username, int hashedPassword) throws NoSuchElementException {
+		//find user
+		try {
+		User usernameMatch = userHashTable.get(username);
+		if (usernameMatch.correctPassword(hashedPassword))
+			return userHashTable.remove(username);
+		} catch (NoSuchElementException e) {
+			throw new NoSuchElementException("Username or password does not match");
+		}
+		throw new NoSuchElementException("Username or password does not match");
 	}
 	
 	/**
@@ -41,8 +49,14 @@ public class BankATM {
 	 * @throws NoSuchElementException if a user with that username is not found or if password is
 	 * incorrect
 	 */
-	public User getUser(String username, String userPassword) throws NoSuchElementException {
-		
+	public User getUser(String username, int hashedPassword) throws NoSuchElementException {
+		try {
+			User usernameMatch = userHashTable.get(username);
+			if (usernameMatch.correctPassword(hashedPassword))
+				return usernameMatch;
+			} catch (NoSuchElementException e) {
+			}
+		throw new NoSuchElementException("Username or password does not match");
 	}
 	
 	/**
@@ -51,7 +65,9 @@ public class BankATM {
 	 * @return true if there are no users in the bank system
 	 */
 	public boolean isEmpty() {
-		
+		if (userHashTable.size() == 0)
+			return true;
+		return false;
 	}
 	/**
 	 * Number of users in the bank system
@@ -59,7 +75,7 @@ public class BankATM {
 	 * @return number of users in the bank system
 	 */
 	public int size() {
-		
+		return userHashTable.size();
 	}
 	
 }

@@ -4,26 +4,17 @@ import java.util.NoSuchElementException;
 public class User {
 	private String username;
 	private int hashedPassword;
-	private HashTableMap<String, Account> accountHashTable;
-	private ArrayList<Account> accounts;
+	private HashTableMap<String, Account> accounts;
 	
 	/**
 	 * Constructor for new user
 	 * @param username to access user's accounts
 	 * @param password to secure the user's accounts
 	 */
-	public User (String username, String password) {
+	public User (String username, int hashedPassword) {
 		this.username = username;
-		hashedPassword = hashPassword(password);
+		this.hashedPassword = hashedPassword;
 		accounts = new HashTableMap<>();
-	}
-	/**
-	 * Hash function for the passwords/attempts to access account
-	 * @param password
-	 * @return hashed password
-	 */
-	private int hashPassword(String password) {
-		
 	}
 	
 	/**
@@ -31,8 +22,8 @@ public class User {
 	 * @param password attempt
 	 * @return true if user entered correct password to access the account
 	 */
-	public boolean correctPassword(String password) {
-		if (hashedPassword == hashPassword(password))
+	public boolean correctPassword(int hashedPassword) {
+		if (this.hashedPassword == hashedPassword)
 			return true;
 		return false;
 	}
@@ -43,10 +34,10 @@ public class User {
 	 * @param newPassword
 	 * @throws IllegalArgumentException if oldPassword does not match current password
 	 */
-	public void changePassword (String oldPassword, String newPassword) throws IllegalArgumentException {
-		if (!correctPassword(oldPassword))
+	public void changePassword (int hashedOldPassword, int hashedNewPassword) throws IllegalArgumentException {
+		if (!correctPassword(hashedOldPassword))
 			throw new IllegalArgumentException("Wrong password was entered");
-		hashedPassword = hashPassword(newPassword);
+		hashedPassword = hashedNewPassword;
 	}
 	
 	/**
@@ -55,7 +46,10 @@ public class User {
 	 * @throws IllegalArgumentException if account with that name already exists
 	 */
 	public void addAccount(String accountName) throws IllegalArgumentException {
-		
+		if (accounts.put(accountName, new Account(accountName)))
+			return;
+		throw new IllegalArgumentException("An account with that name already exists, please enter"
+				+ " a different name");
 	}
 	
 	/**
@@ -64,7 +58,10 @@ public class User {
 	 * @throws NoSuchElementException if account with that name does not exist
 	 */
 	public void removeAccount(String accountName) throws NoSuchElementException {
-		
+		Account accountFound = accounts.remove(accountName);
+		if (accountFound == null)
+			throw new NoSuchElementException("No account with that name was found, please enter "
+					+ "a different account name or create a new account.");
 	}
 	
 	/**
@@ -82,14 +79,12 @@ public class User {
 	 * @throws NoSuchElementException if account with that name does not exist
 	 */
 	public Account getAccount(String accountName) throws NoSuchElementException {
-		
-	}
-	
-	/**
-	 * Returns a string of the users current accounts and their balances
-	 */
-	public String toString() {
-		
+		try {
+			return accounts.get(accountName);
+		} catch (NoSuchElementException e){
+			throw new NoSuchElementException("No account with that name was found, please enter "
+					+ "a different account name or create a new account.");
+		}
 	}
 	
 }
