@@ -1,123 +1,81 @@
-import java.util.Scanner;
+import java.util.NoSuchElementException;
 
 public class BankATM {
-
-  private HashTableMap hashtable;
-  private User master;
-  
-  // creates a new master user
-  public void initialize() {
-
-    Scanner sc = new Scanner(System.in);
-    hashtable = new HashTableMap(10);
-        
-    System.out.println("Create master username");
-    String masterUsername = sc.next();
-    System.out.println("Create master password");
-    int masterPassword = sc.next().hashCode();
-    master = new User( masterUsername, masterPassword);
-    hashtable.put(masterUsername, master);
-
-
-    System.out.println("Welcome to our atm sim");
-  }
-  
-  /**
-   * The entire login process. 
-   * 
-   * @return the user that you logged in as
-   */
-  public User login() {
-
-    while (true) {
-      Scanner sc = new Scanner(System.in);
-      System.out.println("Enter your username: ");
-      String key = sc.next();
-            
-      // check first if the user is the master
-      if ( master.checkUsername(key) == true) {
-        System.out.println("enter your password: ");
-        int masterPassword = sc.next().hashCode();
-        if ( master.checkPassword(masterPassword) == true) {
-          // master access granted
-          System.out.println("hello master");
-          return master;
-        } else {
-          continue;
-        }
-      }
-      
-      if (hashtable.containsKey(key)) {
-        System.out.println("enter your password: ");
-        int password = sc.next().hashCode();
-        if (hashtable.get(key).checkPassword(password) == true) {
-          // access granted
-          return hashtable.get(key); // return the user they logged in as
-        } else {
-          System.out.println("incorrect password/username");
-          continue;
-        }
-      } else {
-        System.out.println("no such user exists");
-        continue;
-      }
-    }
-
-  }
-
-  public User createUser() {
-
-    Scanner sc = new Scanner(System.in);
-    String key;
-
-    while (true) {
-      System.out.println("Create your username: ");
-      key = sc.next();
-
-      if (hashtable.containsKey(key)) {
-        System.out.println("srry that username is taken :(");
-        continue;
-      } else {
-        break;
-      }
-    }
-    System.out.println("Create your password: ");
-    int password = sc.next().hashCode();
-
-    User you = new User(key, password);
-
-    hashtable.put(key, you);
-    return you;
-
-  }
-
-  public void interact(User you) {
-    
-    System.out.println("press 1 to log out");
-    System.out.println("\nview accounts\ncreate new accounts\nwhatever");
-    Scanner sc = new Scanner(System.in);
-    
-    if ( you == master) {
-      while(true) {
-        if ( sc.nextInt() == 1) {
-          return;
-        }
-      // master privileges
-      }
-      // return;
-    }
-
-    while (true) {
-      
-      if ( sc.nextInt() == 1) {
-        return;
-      }
-      // 2. create new accounts
-      // 3. select account
-      // 4. view balance,
-      // 5. withdraw/deposit money
-      // 6. maybe transfer money to other accounts idk
-    }
-  }
-
+	private HashTableMap<String, User> userHashTable;
+	
+	/**
+	 * Creates a new BankATM
+	 * @param bankPassword
+	 */
+	public BankATM() {
+		userHashTable = new HashTableMap<>();
+	}
+	
+	/**
+	 * Adds a new user to the bank
+	 * @param username
+	 * @param userPassword
+	 * @throws IllegalArgumentException if user with that username already exists
+	 */
+	public void addNewUser(String username, int hashedPassword) throws IllegalArgumentException {
+		userHashTable.put(username, new User(username, hashedPassword));
+	}
+	
+	/**
+	 * Removes a user from the bank
+	 * @param username
+	 * @param userPassword
+	 * @return User object
+	 * @throws NoSuchElementException if a user with that username is not found or if password is
+	 * incorrect
+	 */
+	public User removeUser(String username, int hashedPassword) throws NoSuchElementException {
+		//find user
+		try {
+		User usernameMatch = userHashTable.get(username);
+		if (usernameMatch.correctPassword(hashedPassword))
+			return userHashTable.remove(username);
+		} catch (NoSuchElementException e) {
+			throw new NoSuchElementException("Username or password does not match");
+		}
+		throw new NoSuchElementException("Username or password does not match");
+	}
+	
+	/**
+	 * Gets a users account which can be used for login
+	 * @param username
+	 * @param userPassword
+	 * @return the User object that matches the username
+	 * @throws NoSuchElementException if a user with that username is not found or if password is
+	 * incorrect
+	 */
+	public User getUser(String username, int hashedPassword) throws NoSuchElementException {
+		try {
+			User usernameMatch = userHashTable.get(username);
+			if (usernameMatch.correctPassword(hashedPassword))
+				return usernameMatch;
+			} catch (NoSuchElementException e) {
+			}
+		throw new NoSuchElementException("Username or password does not match");
+	}
+	
+	/**
+	 * Returns if the bank system contains any users or not
+	 * @param bankPassword
+	 * @return true if there are no users in the bank system
+	 */
+	public boolean isEmpty() {
+		if (userHashTable.size() == 0)
+			return true;
+		return false;
+	}
+	/**
+	 * Number of users in the bank system
+	 * @param bankPassword
+	 * @return number of users in the bank system
+	 */
+	public int size() {
+		return userHashTable.size();
+	}
+	
 }
