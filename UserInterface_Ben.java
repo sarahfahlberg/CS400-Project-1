@@ -91,7 +91,7 @@ public class UserInterface_Ben{
             int password = scnr.nextLine().hashCode();
             if(hashtable.get(userName) == password){
                 loggedIn = true;
-                loginInScreen(scnr);
+                loggedInScreen(scnr, userName);
             }
             else{
                 logIn(scnr);
@@ -112,6 +112,7 @@ public class UserInterface_Ben{
             }
             catch(IllegalArgumentException e){
                 System.out.println(e);
+                addMoney(account);
             }
 
 
@@ -131,6 +132,7 @@ public class UserInterface_Ben{
             }
             catch(IllegalArgumentException e){
                 System.out.println(e);
+                removeMoney(account);
             }
 
         }
@@ -145,9 +147,12 @@ public class UserInterface_Ben{
 
             if(input.equals("1")){
                 loggedIn = false;
+                System.out.println("See you next time!");
+                driver();
+
             }
             else if(input.equals("2")){
-                System.out.println("See you next time!");
+                
             }
             else{
                 System.out.println("Please choose a valid option");
@@ -158,10 +163,63 @@ public class UserInterface_Ben{
 
         }
 
-        public void logInScreen(){
+
+        public void loggedInScreen(Scanner scnr, String username){
             
-            System.out.println()
+            System.out.println("Welcome " + username);
+            System.out.println();
+            System.out.println("1. Open Account");
+            System.out.println("2. View Accounts");
+            System.out.println("3. Log Out");
+
+            String choice = scnr.nextLine().trim();
+
+            if(choice.equals("1")){
+                openAccount(scnr);
+            }
+            else if(choice.equals("2")){
+                viewAccounts(scnr);
+            }
+            else if(choice.equals("3")){
+                logOut(scnr);
+            }
+            else{
+                System.out.println("Please choose a valid option.")
+                loggedInScreen(scnr);
+            }
+
+            
         }
+
+        public void viewAccounts(){
+            
+        }
+
+        public void openAccount(Scanner scnr){
+            System.out.println("What would you like the name of the account to be?: ");
+            String accountName = scnr.nextLine().trim();
+
+            System.out.println("You'd like to name this account " + accountName + "?");
+            System.out.println("1. Yes");
+            System.out.println("2. No");
+
+            String choice = scnr.nextLine().trim();
+            
+            if(choice.equals("1")){
+                User.addAccount(accountName);
+            }
+            else if(choice.equals("2")){
+                openAccount(scnr);
+            }
+            else{
+                System.out.println("Please enter a valid response.");
+                openAccount(scnr);
+            }
+
+
+
+        }
+
 
         public void printAccounts(User user){
             System.out.println(user.listAccounts());
@@ -185,8 +243,9 @@ public class UserInterface_Ben{
             else if(choice.equals("2")){
                 createAccount(scnr);
             }
-            else{
+            else if(choice.equals("3"){
                 System.out.println("Have a good day!");
+                //Save session
             }
 
 
