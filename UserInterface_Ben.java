@@ -12,8 +12,11 @@ import java.util.Scanner;
 public class UserInterface_Ben{
     private HashTableMap<String, Integer> hashtable;
     private boolean loggedIn = false;   
-        public void createAccount(){
-            Scanner scnr = new Scanner(System.in);
+        
+    
+    
+        public void createAccount(Scanner scnr){
+            
             String userName = "";
             
 
@@ -63,9 +66,9 @@ public class UserInterface_Ben{
 
         }
 
-        public void logIn(){
+        public void logIn(Scanner scnr){
             
-            Scanner scnr = new Scanner(System.in);
+            
             String userName = "";
             
 
@@ -88,9 +91,10 @@ public class UserInterface_Ben{
             int password = scnr.nextLine().hashCode();
             if(hashtable.get(userName) == password){
                 loggedIn = true;
+                loginInScreen(scnr);
             }
             else{
-                logIn();
+                logIn(scnr);
             }
 
 
@@ -131,8 +135,8 @@ public class UserInterface_Ben{
 
         }
 
-        public void logOut(){
-            Scanner scnr = new Scanner(System.in);
+        public void logOut(Scanner scnr){
+            
             System.out.println("Are you sure you would like to log out? ");
             System.out.println("1. Yes");
             System.out.println("2. No");
@@ -147,17 +151,49 @@ public class UserInterface_Ben{
             }
             else{
                 System.out.println("Please choose a valid option");
-                logOut();
+                logOut(scnr);
             }
 
 
 
         }
 
-        public void printAccounts(User user){
-            System.out.println(user.listAccounts());
+        public void logInScreen(){
+            
+            System.out.println()
         }
 
+        public void printAccounts(User user){
+            System.out.println(user.listAccounts());
+
+        }
+
+        
+        public void driver(){
+            Scanner scnr = new Scanner(System.in)
+            System.out.println("Welcome");
+            System.out.println();
+            System.out.println("1. Login");
+            System.out.println("2. Create an Account");
+            System.out.println("3. Quit");
+
+            String choice = scnr.nextLine().trim();
+
+            if(choice.equals("1")){
+                logIn(scnr);
+            }
+            else if(choice.equals("2")){
+                createAccount(scnr);
+            }
+            else{
+                System.out.println("Have a good day!");
+            }
+
+
+            
+        }
+
+        
 
         
 
