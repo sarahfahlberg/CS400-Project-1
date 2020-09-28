@@ -6,6 +6,8 @@
 // Lecturer: Florian Heimerl
 // Notes to Grader:
 
+import java.io.FileNotFoundException;
+import java.nio.file.NoSuchFileException;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -26,26 +28,33 @@ public class UserInterface_Ben {
         boolean usernameFree = false;
         while (!usernameFree) {
             System.out.println("Let's set up your account!");
-            System.out.println("First let's setup a username. Please type one below (at least 4 characters)");
+            System.out.println("First let's setup a username. Please type one below (no spaces): ");
 
-            username = scnr.nextLine();
-            
-            
-            while (!passwordMatch) {
-                System.out.println("Ok " + username + ", let's create a password: ");
-                
-                tempPass = scnr.nextLine().trim();
-                
-                if(tempPass.length() < 4) {
-                    
-                    System.out.println("Please enter a password with at least 4"
-                        + "characters");
+            boolean usernameValid = false;
+            while (!usernameValid) {
+                username = scnr.nextLine().trim();
+                if (username.contains(" ")) {
+                    System.out.println("Please make sure your username has no spaces: ");
                     continue;
-                    
+
                 }
-                
+                usernameValid = true;
+            }
+            while (!passwordMatch) {
+                System.out.println(
+                    "Ok " + username + ", let's create a password (at least 4 characters): ");
+
+                tempPass = scnr.nextLine().trim();
+
+                if (tempPass.length() < 4) {
+
+                    System.out.println("Please enter a password with at least 4" + "characters");
+                    continue;
+
+                }
+
                 password = tempPass.hashCode();
-                
+
 
                 System.out.println("Please retype your password: ");
 
@@ -94,7 +103,7 @@ public class UserInterface_Ben {
             username = scnr.nextLine();
             System.out.print("\n");
 
-            System.out.println("Password");
+            System.out.println("Password: ");
             int password = scnr.nextLine().hashCode();
             user = bank.getUser(username, password);
             loggedIn = true;
@@ -114,34 +123,38 @@ public class UserInterface_Ben {
 
 
 
-    public static void addMoney(Account account) {
-        Scanner scnr = new Scanner(System.in);
+    public static void addMoney(Scanner scnr, Account account) {
+
 
         System.out.println("How much money would you like to deposit?");
         double amountToAdd = scnr.nextDouble();
         try {
             account.deposit(amountToAdd);
+            viewAccounts(scnr, user);
         } catch (IllegalArgumentException e) {
             System.out.println(e);
-            addMoney(account);
+            addMoney(scnr, account);
         }
 
-
+        System.out.println(account.toString());
 
     }
 
-    public static void removeMoney(Account account) {
-        Scanner scnr = new Scanner(System.in);
+    public static void removeMoney(Scanner scnr, Account account) {
+        
 
         System.out.println("How much money would you like to withdraw?");
         double amountToWithdraw = scnr.nextDouble();
 
         try {
             account.withdraw(amountToWithdraw);
+            viewAccounts(scnr, user);
         } catch (IllegalArgumentException e) {
             System.out.println(e);
-            removeMoney(account);
+            removeMoney(scnr, account);
         }
+        
+        
 
     }
 
@@ -200,6 +213,47 @@ public class UserInterface_Ben {
 
 
     public static void viewAccounts(Scanner scnr, User user) {
+        System.out.println();
+        printAccounts(user);
+        System.out.println();
+
+        System.out.println("1. Deposit money to an account");
+        System.out.println("2. Withdraw money from an account");
+        System.out.println("3. Home");
+
+        String choice = scnr.nextLine().trim();
+
+        if (choice.equals("1")) {
+            System.out.println("Which account would you like to deposit money to?");
+            String accountName = scnr.nextLine().trim();
+            try {
+                Account userAccount = user.getAccount(accountName);
+                addMoney(scnr, userAccount);
+            } catch (NoSuchElementException e) {
+                System.out.println(e);
+            }
+
+        }
+        else if (choice.equals("2")) {
+            System.out.println("Which account would you like to withdraw money from?");
+            String accountName = scnr.nextLine().trim();
+            try {
+                Account userAccount = user.getAccount(accountName);
+                removeMoney(scnr, userAccount);
+            } catch (NoSuchElementException e) {
+                System.out.println(e);
+            }
+
+        }
+        
+        else if(choice.contentEquals("3")) {
+            loggedInScreen(scnr, user);
+        }
+        else {
+            System.out.println("Please enter a valid response.");
+        }
+        
+
 
     }
 
@@ -212,115 +266,128 @@ public class UserInterface_Ben {
         System.out.println("2. No");
 
         String choice = scnr.nextLine().trim();
+        try {
 
-        if (choice.equals("1")) {
-            user.addAccount(accountName);
-            System.out.println(accountName + "account has been opened.");
-            loggedInScreen(scnr, user);
-        } else if (choice.equals("2")) {
-            openAccount(scnr, user);
-        } else {
-            System.out.println("Please enter a valid response.");
+
+            if (choice.equals("1")) {
+                user.addAccount(accountName);
+                System.out.println(accountName + "account has been opened.");
+                loggedInScreen(scnr, user);
+            } else if (choice.equals("2")) {
+                openAccount(scnr, user);
+            } else {
+                System.out.println("Please enter a valid response.");
+                openAccount(scnr, user);
+            }
+        } catch (IllegalArgumentException e) {
+            System.out.println(e);
             openAccount(scnr, user);
         }
-
 
 
     }
 
 
     public static void printAccounts(User user) {
-        System.out.println(user.listAccounts());
+        System.out.println(user.toString2());
 
     }
 
     public static void changePassword(Scanner scnr, User user) {
-		
-		System.out.println("Please type in your current password: ");
-		
-		int currPass = scnr.nextLine().hashCode();
-		
-		try{
-		    bank.getUser(username, currPass);
-		}
-		 catch(NoSuchElementException e) {
-		     System.out.println("Password does not match. Please try again.");
-	         changePassword(scnr, user);
-		 }
-		    
-	        
-	        
-		    
-		
-		System.out.println();
+
+        System.out.println("Please type in your current password: ");
+
+        int currPass = scnr.nextLine().hashCode();
+
+        try {
+            bank.getUser(username, currPass);
+        } catch (NoSuchElementException e) {
+            System.out.println("Password does not match. Please try again.");
+            System.out.println();
+            changePassword(scnr, user);
+        }
+
+
+
+        System.out.println();
         boolean newPassMatch = false;
         int newPass = 0;
-		while(!newPassMatch) {
-		    System.out.println("Please type in your new password: ");
-        
-		    newPass = scnr.nextLine().trim().hashCode();
-        
-		    System.out.println("Re-type your new password: ");
-        
-		    int newPass2 = scnr.nextLine().trim().hashCode();
-		    if(newPass == newPass2) {
-		        
-		        newPassMatch = true;
-		    }
-		
-		}
-		
-		user.changePassword(currPass, newPass);
-		
-		System.out.println("Password has been changed.");
-		loggedInScreen(scnr, user);
-		
-	}
+        while (!newPassMatch) {
+            System.out.println("Please type in your new password: ");
 
+            newPass = scnr.nextLine().trim().hashCode();
 
-    public static void driver(){
-		Scanner scnr = new Scanner(System.in);
-		System.out.println("Welcome to Java ATM");
-		System.out.println();
-		System.out.println("1. Login");
-		System.out.println("2. Create an Account");
-		System.out.println("3. Quit");
+            System.out.println("Re-type your new password: ");
 
-		String choice = scnr.nextLine().trim();
+            int newPass2 = scnr.nextLine().trim().hashCode();
+            if (newPass == newPass2) {
 
-		if(choice.equals("1")){
-			logIn(scnr);
-		}
-		else if(choice.equals("2")){
-			createAccount(scnr);
-		}
-		else if(choice.equals("3")){
-			System.out.println("Have a good day!");
-			//Save session
-			
-			saveBank();
+                newPassMatch = true;
+            }
 
-		}
-		else {
-		    
-		    System.out.println("Please enter a valid input");
-		    driver();
-		
-		}
+        }
 
+        user.changePassword(currPass, newPass);
 
-
-
-	}
-
-    public static BankATM saveBank() {
-        return bank;
+        System.out.println("Password has been changed.");
+        System.out.println();
+        loggedInScreen(scnr, user);
 
     }
 
-    public static void main(String[] args) {
-        driver();
 
+    public static void driver() {
+        Scanner scnr = new Scanner(System.in);
+        System.out.println("Welcome to Java ATM");
+        System.out.println();
+        System.out.println("1. Login");
+        System.out.println("2. Create an Account");
+        System.out.println("3. Quit");
+
+        String choice = scnr.nextLine().trim();
+
+        if (choice.equals("1")) {
+            logIn(scnr);
+        } else if (choice.equals("2")) {
+            createAccount(scnr);
+        } else if (choice.equals("3")) {
+            System.out.println("Have a good day!");
+            // Save session
+
+            saveBank();
+
+        } else {
+
+            System.out.println("Please enter a valid input");
+            driver();
+
+        }
+
+
+
+    }
+
+    public static void saveBank() {
+
+        DataAlex.createFile();
+
+    }
+
+    public static void loadBank() {
+        try{
+            DataAlex.writeFile();
+        }
+        catch(FileNotFoundException e) {
+            System.out.println(e);
+        }
+    }
+
+    public static void main(String[] args) {
+        loadBank();
+
+
+        driver();
+        saveBank();
     }
 
 
