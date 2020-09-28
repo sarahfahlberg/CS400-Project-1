@@ -18,7 +18,8 @@ public class BankATM {
 	 * @throws IllegalArgumentException if user with that username already exists
 	 */
 	public void addNewUser(String username, int hashedPassword) throws IllegalArgumentException {
-		userHashTable.put(username, new User(username, hashedPassword));
+		if (!userHashTable.put(username, new User(username, hashedPassword)))
+			throw new IllegalArgumentException("A user with that username already exists, please choose a new username");
 	}
 	
 	/**
