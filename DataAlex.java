@@ -106,6 +106,5 @@ public class DataAlex {
 		}
 		return newBank;
 		
-		
 	}
 }
