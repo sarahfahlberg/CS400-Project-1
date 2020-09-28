@@ -27,9 +27,9 @@ import java.util.ArrayList;
  *
  */
 public class DataAlex {
-	BankATM bank = UserInterface_Ben.bank;
+	public static BankATM bank = UserInterface_Ben.bank;
 	// uses inner toString methods to get the string in format shown in class header
-	String bankString = bank.toString(); 
+	public static String bankString = bank.toString(); 
 	
 	/**
 	 * Creates a file called Users.txt
