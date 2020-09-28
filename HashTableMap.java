@@ -216,9 +216,9 @@ public class HashTableMap<KeyType, ValueType> implements MapADT<KeyType, ValueTy
 	 */
 	public String toString() {
 		String string = "";
-		for (int i = 0; i < hashTable.length; i++) {
-			for (int j = 0; j < hashTable[i].size(); j++) {
-				string += hashTable[i].get(j).getValue().toString() + "\n";
+		for (int i = 0; i < myArray.length; i++) {
+			for (int j = 0; j < myArray[i].size(); j++) {
+				string += myArray[i].get(j).getValue().toString() + "\n";
 			}
 		}
 
