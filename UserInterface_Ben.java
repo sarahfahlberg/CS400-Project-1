@@ -384,9 +384,10 @@ public class UserInterface_Ben {
 
     public static void loadBank() {
         try{
-            DataAlex.readFile();
+            bank = DataAlex.readFile();
         }
         catch(Exception e) {
+            System.out.print(e);
             bank = new BankATM();
         }
     }
