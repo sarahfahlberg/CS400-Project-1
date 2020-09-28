@@ -20,9 +20,9 @@ import java.util.ArrayList;
  * 
  * name
  * hashedPassword
- * accountName accountPassword
- * accountName accountPassword
- * accountName accountPassword
+ * accountName accountBalance
+ * accountName accountBalance
+ * accountName accountBalance
  * @author Alex
  *
  */

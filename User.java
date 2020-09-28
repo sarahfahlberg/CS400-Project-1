@@ -92,9 +92,9 @@ public class User {
 	 * creates desired toString in the format:
 	 * name
 	 * hashedPassword
-	 * accountName accountPassword
-	 * accountName accountPassword
-	 * accountName accountPassword
+	 * accountName accountBalance
+	 * accountName accountBalance
+	 * accountName accountBalance
 	 */
 	public String toString() {
 		String s = username + "\n";
@@ -105,5 +105,5 @@ public class User {
 		s += "\n";
 		return s; 
 	}
-	
+
 }
