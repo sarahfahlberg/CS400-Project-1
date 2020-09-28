@@ -80,7 +80,7 @@ public class BankATM {
 	}
 
 	@Override
-	public toString(){
+	public String toString(){
         	return userHashTable.toString();
 	}        	
 }
