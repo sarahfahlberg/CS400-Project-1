@@ -78,5 +78,9 @@ public class BankATM {
 	public int size() {
 		return userHashTable.size();
 	}
-	
+
+	@Override
+	public String toString(){
+        	return userHashTable.toString();
+	}        	
 }

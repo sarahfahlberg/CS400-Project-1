@@ -87,4 +87,23 @@ public class User {
 		}
 	}
 	
+	/*
+	 * @author: Alex
+	 * creates desired toString in the format:
+	 * name
+	 * hashedPassword
+	 * accountName accountBalance
+	 * accountName accountBalance
+	 * accountName accountBalance
+	 */
+	public String toString() {
+		String s = username + "\n";
+		s += hashedPassword + "\n";
+		
+		s += accounts.toString();
+
+		s += "\n";
+		return s; 
+	}
+
 }
