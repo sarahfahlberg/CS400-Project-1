@@ -229,8 +229,10 @@ public class UserInterface_Ben {
             try {
                 Account userAccount = user.getAccount(accountName);
                 addMoney(scnr, userAccount);
+                
             } catch (NoSuchElementException e) {
                 System.out.println(e);
+                viewAccounts(scnr, user);
             }
 
         }
@@ -240,6 +242,7 @@ public class UserInterface_Ben {
             try {
                 Account userAccount = user.getAccount(accountName);
                 removeMoney(scnr, userAccount);
+                
             } catch (NoSuchElementException e) {
                 System.out.println(e);
             }
@@ -251,6 +254,7 @@ public class UserInterface_Ben {
         }
         else {
             System.out.println("Please enter a valid response.");
+            viewAccounts(scnr, user);
         }
         
 
@@ -369,16 +373,21 @@ public class UserInterface_Ben {
 
     public static void saveBank() {
 
-        DataAlex.createFile();
+        try{
+            DataAlex.writeFile();
+        }
+        catch(Exception e) {
+            System.out.println(e);
+        }
 
     }
 
     public static void loadBank() {
         try{
-            DataAlex.writeFile();
+            DataAlex.readFile();
         }
-        catch(FileNotFoundException e) {
-            System.out.println(e);
+        catch(Exception e) {
+            bank = new BankATM();
         }
     }
 
