@@ -208,6 +208,21 @@ public class HashTableMap<KeyType, ValueType> implements MapADT<KeyType, ValueTy
 		
 		this.myArray = newArray;
 	}
+
+	/*
+	 * author: Alex
+	 * gets toString for each user
+	 * @return combined toString for all users in hashTable.
+	 */
+	public String toString() {
+		String string = "";
+		for (int i = 0; i < hashTable.length; i++) {
+			for (int j = 0; j < hashTable[i].size(); j++) {
+				string += hashTable[i].get(j).getValue().toString() + "\n";
+			}
+		}
+
+	}
 	
 //	private void print() {
 //		// prints out the current state of the HashTableMap in an easily understandable format
