@@ -50,7 +50,8 @@ public class DataAlex {
 	}
 	
 	/**
-	 * c
+	 * Creates a file called Users.txt using createFile()
+     * then writes bankString onto the file 
 	 * @throws FileNotFoundException
 	 */
 	public void writeFile() throws FileNotFoundException{
