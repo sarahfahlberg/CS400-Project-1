@@ -20,20 +20,32 @@ public class UserInterface_Ben {
 
 
         int password = 0;
+        String tempPass = "";
         boolean passwordMatch = false;
 
         boolean usernameFree = false;
         while (!usernameFree) {
             System.out.println("Let's set up your account!");
-            System.out.println("First let's setup a username. Please type one below");
+            System.out.println("First let's setup a username. Please type one below (at least 4 characters)");
 
             username = scnr.nextLine();
-            System.out.println("Ok " + username + ", let's create a password: ");
-
+            
+            
             while (!passwordMatch) {
-
-                password = scnr.nextLine().trim().hashCode();
-
+                System.out.println("Ok " + username + ", let's create a password: ");
+                
+                tempPass = scnr.nextLine().trim();
+                
+                if(tempPass.length() < 4) {
+                    
+                    System.out.println("Please enter a password with at least 4"
+                        + "characters");
+                    continue;
+                    
+                }
+                
+                password = tempPass.hashCode();
+                
 
                 System.out.println("Please retype your password: ");
 
@@ -53,7 +65,7 @@ public class UserInterface_Ben {
 
 
             } catch (NoSuchElementException e) {
-                System.out.println(e);
+                System.out.println("That username is taken.");
                 createAccount(scnr);
                 return;
             }
@@ -174,7 +186,7 @@ public class UserInterface_Ben {
             openAccount(scnr, user);
         } else if (choice.equals("2")) {
             viewAccounts(scnr, user);
-        } else if (choice.contentEquals("3")) {
+        } else if (choice.equals("3")) {
             changePassword(scnr, user);
         } else if (choice.equals("4")) {
             logOut(scnr);
@@ -288,6 +300,12 @@ public class UserInterface_Ben {
 			
 			saveBank();
 
+		}
+		else {
+		    
+		    System.out.println("Please enter a valid input");
+		    driver();
+		
 		}
 
 
