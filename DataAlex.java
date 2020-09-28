@@ -35,7 +35,7 @@ public class DataAlex {
 	 * Creates a file called Users.txt
 	 * @return
 	 */
-	public boolean createFile() {
+	public static boolean createFile() {
 		File file = new File("Users.txt");
 		try {
 			if (file.createNewFile())
@@ -53,7 +53,7 @@ public class DataAlex {
 	 * c
 	 * @throws FileNotFoundException
 	 */
-	public void writeFile() throws FileNotFoundException{
+	public static void writeFile() throws FileNotFoundException{
 		createFile();
 		String fileName = "Users.txt";
 		PrintWriter writer;
@@ -72,7 +72,7 @@ public class DataAlex {
 	 * @return bank object
 	 * @throws FileNotFoundException
 	 */
-	public BankATM readFile() throws FileNotFoundException{
+	public static BankATM readFile() throws FileNotFoundException{
 
 		BankATM newBank = new BankATM();
 		Scanner scnr = new Scanner("Users.txt");
@@ -108,3 +108,4 @@ public class DataAlex {
 		
 	}
 }
+
