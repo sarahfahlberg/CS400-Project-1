@@ -1,15 +1,31 @@
 
+
+// --== CS400 File Header Information ==--
+// Name: Sarah Fahlberg
+// Email: sfahlberg@wisc.edu
+// Team: CD
+// Role: Backend developer
+// TA: Yeping
+// Lecturer: Gary Dahl
+// Notes to Grader: collaboration between Sarah Fahlberg and Alex Wu
+
 public class HashTableMapPrint<KeyType,ValueType> extends HashTableMap<KeyType,ValueType> {
+	/*
+	 * author: Alex
+	 * gets toString for each user
+	 * @return combined toString for all users in hashTable.
+	 */
 	@Override
 	public String toString() {
-		String fullString = "";
-		//must change field of hashTable or whatever the name of the array is to protected
-		for (int i=0; i<super.hashTable.length; i++) {
-			for(Pair<KeyType,ValueType> pair : hashTable[i]) {
-				fullString += pair.getKey().toString() + pair.getValue().toString();
+		String string = "";
+		for (int i = 0; i < hashTable.length; i++) {
+			for (int j = 0; j < hashTable[i].size(); j++) {
+				string += hashTable[i].get(j).getValue().toString() + "\n";
+				
 			}
 		}
-		return fullString;
+		return string;
+
 	}
 
 }
