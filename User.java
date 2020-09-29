@@ -109,6 +109,7 @@ public class User {
 	/*
 	 * Returns string of 
 	 * accountName accountBalance
+	 * @author Ben Radosevich
 	 */
 	public String toString2() {
 	    String s = "";
