@@ -7,7 +7,6 @@
 // Lecturer: Gary Dahl
 // Notes to Grader: written by Sarah Fahlberg with additions from Alex Wu
 
-import java.util.ArrayList;
 import java.util.NoSuchElementException;
 
 public class User {
@@ -71,14 +70,6 @@ public class User {
 		if (accountFound == null)
 			throw new NoSuchElementException("No account with that name was found, please enter "
 					+ "a different account name or create a new account.");
-	}
-	
-	/**
-	 * To string to list all of the accounts
-	 * @return a string representation of all of the account names and balances
-	 */
-	public String listAccounts() {
-		
 	}
 	
 	/**
