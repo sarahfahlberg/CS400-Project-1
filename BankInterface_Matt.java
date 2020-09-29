@@ -1,4 +1,10 @@
-
+// --== CS400 File Header Information ==--
+// Name: Matthew Wilson
+// Email: mhwilson3@wisc.edu
+// Team: CD
+// TA: Yeping Wang
+// Lecturer: Florian Heimerl
+// Notes to Grader: 
 
 import java.util.NoSuchElementException;
 import java.util.Scanner;
