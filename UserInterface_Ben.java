@@ -136,7 +136,6 @@ public class UserInterface_Ben {
             addMoney(scnr, account);
         }
 
-        System.out.println(account.toString());
 
     }
 
@@ -220,7 +219,8 @@ public class UserInterface_Ben {
 
         System.out.println("1. Deposit money to an account");
         System.out.println("2. Withdraw money from an account");
-        System.out.println("3. Home");
+        System.out.println("3. Remove an account");
+        System.out.println("4. Home");
 
         String choice = scnr.nextLine().trim();
 
@@ -250,8 +250,34 @@ public class UserInterface_Ben {
             }
 
         }
+        else if(choice.equals("3")) {
+            System.out.println("Which account would you like to remove?");
+            String accountName = scnr.nextLine().trim();
+            try {
+                Account userAccount = user.getAccount(accountName);
+                System.out.println("Are you sure you'd like to remove " + userAccount + "?");
+                System.out.println("1. Yes");
+                System.out.println("2. No");
+                String removeChoice = scnr.nextLine().trim();
+                if(removeChoice.equals("1")) {
+                    user.removeAccount(accountName);
+                    viewAccounts(scnr, user);
+                }
+                else if(removeChoice.equals("2")) {
+                    viewAccounts(scnr, user);
+                }
+                
+                else {
+                    System.out.println("Please enter a valid option.");
+                }
+                
+            } catch (NoSuchElementException e) {
+                System.out.println(e);
+                viewAccounts(scnr, user);
+            }
+        }
         
-        else if(choice.contentEquals("3")) {
+        else if(choice.equals("4")) {
             loggedInScreen(scnr, user);
         }
         else {
