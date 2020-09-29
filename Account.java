@@ -1,4 +1,13 @@
 
+// --== CS400 File Header Information ==--
+// Name: Sarah Fahlberg
+// Email: sfahlberg@wisc.edu
+// Team: CD
+// Role: Backend developer
+// TA: Yeping
+// Lecturer: Gary Dahl
+// Notes to Grader: written by Sarah Fahlberg
+
 public class Account {
 	private String accountName;
 	private double balance;
