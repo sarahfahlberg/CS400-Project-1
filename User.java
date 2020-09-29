@@ -102,7 +102,6 @@ public class User {
 		
 		s += accounts.toString();
 
-		s += "\n";
 		return s; 
 	}
 	

@@ -1,214 +1,182 @@
-// --== CS400 File Header Information ==--
-// Name: Gabriel Friederichs
-// Email: ghfriederich@wisc.edu
-// Team: <your team name: two letters>
-// TA: <name of your team's ta>
-// Lecturer: Gary Dahl
-// Notes to Grader: The "print()" statements written in column 1 are there to make it easy to see where my debugging points are.
-
 import java.util.NoSuchElementException;
+import java.util.LinkedList;
+//--== CS400 File Header Information ==--
+//Name: Alexander Wu
+//Email: adwu2@wisc.edu
+//Team: CD
+//TA: Yeping
+//Lecturer: Florian Heimerl  
+//Notes to Grader: 
+public class HashTableMap <KeyType, ValueType> implements MapADT<KeyType, ValueType> {
+	private LinkedList<Node<KeyType, ValueType>>[] hashTable;
+	private int size = 0;
+	private int capacity = 10;
 
-public class HashTableMap<KeyType, ValueType> implements MapADT<KeyType, ValueType> {
-
-	private HashNode[] myArray; // 1D array which stores HashNodes
-	private int numberOfElements; // counter for total number of elements in this HashTableMap
-	
-	
+	/**
+	 * Constructor to set initial capacity and create hashTable and fills with LinkedLists
+	 * @param capacity 
+	 */
 	public HashTableMap(int capacity) {
-		myArray = new HashNode[capacity];
-		numberOfElements = 0;
+		this.capacity = capacity;
+		hashTable = new LinkedList[capacity];
+		for (int i = 0; i < capacity; i++) {
+			// each cell of hashTable is its own LinkedList
+			// this makes it easier to deal with collisions (chaining)
+			hashTable[i] = new LinkedList<Node<KeyType, ValueType>>();
+		}
 	}
-	
-	public HashTableMap() {
-		// default capacity = 10
-		myArray = new HashNode[10];
-		numberOfElements = 0;
-	}
-	
-	
+	/**
+	 * Constructor that sets initial capacity to 10 and fills with LinkedLists
+	 */
+	public HashTableMap() { //default capacity of 10 
+		hashTable = new LinkedList[capacity];
+		for (int i = 0; i < capacity; i++) {
+			hashTable[i] = new LinkedList<Node<KeyType, ValueType>>();
+		}
 
-	@Override
-	public boolean put(KeyType key, ValueType value) {
-		if (containsKey(key)) return false;	// a node already exists with that key! No changes made.
-		
-		int putIndex = Math.abs(key.hashCode()) % myArray.length; // determines index to put node at
-		HashNode newNode = new HashNode(putIndex, key, value); // creates node
-		
-		// will put node right at index if element is null
-		// otherwise, will be placed at the end of the existing chain
-		if (myArray[putIndex] == null) {
-			myArray[putIndex] = newNode;
+	} 
+
+	/**
+	 * Finds the index that corresponds to a key by hashing and finding the
+	 * remainder of dividing by the capacity.
+	 * @param key
+	 * @return hashed value used as index in the hashtable
+	 */
+	private int getListIndex(KeyType key) { // uses formula in directions
+		int hash = Math.abs(key.hashCode());
+		return hash%capacity;
+	}
+
+	/**
+	 * This method creates a new hash table with twice the capacity and rehashes each key
+	 * and places the key-value pairs in the new table accordingly.
+	 */
+	private void resize() {
+		// grow
+		LinkedList<Node<KeyType, ValueType>>[] oldHashTable = hashTable;
+		capacity*=2; 
+		hashTable = new LinkedList[capacity];
+		for (int i = 0; i < capacity; i++) { // fill new hashTable with LinkedLists
+			hashTable[i] = new LinkedList<Node<KeyType, ValueType>>();
 		}
-		else {
-			HashNode prevNode = myArray[putIndex]; // prevNode refers to an existing node
-			
-			// while prevNode has a next node, prevNode is set to that next node
-			while (prevNode.getNext() != null) {
-				prevNode = prevNode.getNext();
+
+		for (int i = 0; i < capacity/2; i++) { // copy over Nodes from oldHashTable to hashTable
+			for(int j = 0; j < oldHashTable[i].size(); j++) {
+				int newIndex = getListIndex(oldHashTable[i].get(j).getKey());
+				hashTable[newIndex].add(oldHashTable[i].get(j));
 			}
-			
-			// places the new node at the end of the chain and links it to the previous node
-			prevNode.setNext(newNode);
-			newNode.setPrevious(prevNode);
 		}
-		
-		++numberOfElements;
-		
-		if (needsToGrow()) {
-			grow();
+	}
+	/**
+	 * This method adds a key-value pair to the hashtable.
+	 * 
+	 * If the size is > or = to 80% of the capacity, call the resize() method.
+	 * @return false if there is a duplicate key already in the table, return false and don't add the k-v pair
+	 * true if the key was added successfully
+	 */
+	public boolean put(KeyType key, ValueType value) {
+		if (containsKey(key))
+			return false;
+		int index = getListIndex(key);
+		Node<KeyType, ValueType> node = new Node<KeyType, ValueType>(key, value);
+		hashTable[index].add(node); 
+		size++;
+		if (size >= 0.8*capacity) { 
+			// calls resize method so that capacity will be expanded for next call of put method
+			resize(); 
 		}
-		
-//print();
 		return true;
 	}
 
-	@Override
+	/**
+	 * @throws NoSuchElementException -- if the key is not in the HashTable
+	 * @return the reference to the value found using given key.
+	 */
 	public ValueType get(KeyType key) throws NoSuchElementException {
-		// I've elected not to check if the key exists first using containsKey() since this method is
-		// so similar that it would be redundant.
-		
-		int getIndex = Math.abs(key.hashCode()) % myArray.length;
-		HashNode currentNode = myArray[getIndex]; // the node that will be checked
-		
-//		if (currentNode == null) {
-//			throw new NoSuchElementException("No element found at index [" + getIndex + "]!");
-//		}
-		
-		while (currentNode != null) {
-			if (currentNode.getKey().equals(key)) {
-				return (ValueType) currentNode.getValue();
-			}
-			else {
-				currentNode = currentNode.getNext();
-			}
-		}
-		
-		throw new NoSuchElementException("No element found at index [" + getIndex + "] with that key!");
-	}
+		if (!containsKey(key))
+			throw new NoSuchElementException("This key is not in the HashTableMap");
 
-	@Override
+		int index = getListIndex(key);
+		for (int i = 0; i < hashTable[index].size(); i++) {
+			if (hashTable[index].get(i).getKey().equals(key))
+				return hashTable[index].get(i).getValue();	
+		}
+		throw new NoSuchElementException("This key is not in the HashTableMap");
+
+	}
+	/**
+	 * @return number of key-value pairs
+	 */
 	public int size() {
-		return numberOfElements;
+		return size;
 	}
 
-	@Override
+	/**
+	 * used in test 5 of TestHashTable
+	 * @return current capacity of the hashtable
+	 */
+	public int capacity() { 
+		return capacity;
+	}
+
+	/**
+	 * @return true if the hashtable contains given key
+	 * false if the hashtable does not contain given key
+	 */
 	public boolean containsKey(KeyType key) {
-		// Goes to the hashed index and then examines the chain to see if the key exists in it
-		
-		int index = Math.abs(key.hashCode()) % myArray.length;
-		HashNode currentNode = myArray[index];
-		
-		// examines every element in the chain at the proper index
-		while (currentNode != null) {
-			if (currentNode.getKey().equals(key)) {
+		int index = getListIndex(key);
+		for (int i = 0; i < hashTable[index].size(); i++) {
+			if (hashTable[index].get(i).getKey().equals(key))
 				return true;
-			}
-			else {
-				currentNode = currentNode.getNext();
-			}
 		}
-		
 		return false;
 	}
 
-	@Override
+	/**
+	 * removes the node corresponding to the key
+	 * @return value that corresponds to given key
+	 */
 	public ValueType remove(KeyType key) {
-//print();
-		if (!containsKey(key)) return null; // returns null since the key does not exist in the HashTableMap
-		
-		int removeIndex = Math.abs(key.hashCode()) % myArray.length;
-		HashNode currentNode = myArray[removeIndex];
-		
-		// since containsKey() was already checked, the key *will* be found somewhere in the currentNode chain
-		while (!currentNode.getKey().equals(key)) {
-			currentNode = currentNode.getNext();
-		}
-		// after exiting, currentNode refers to the node with the matching key
-		
-		HashNode prevNode = currentNode.getPrevious();
-		HashNode nextNode = currentNode.getNext();
-		
-		if (prevNode != null) {
-			prevNode.setNext(nextNode); // the previous node's next now refers to the next node
-		} else {
-			// the removal node is at the head of the chain, so set the next node at the index
-			myArray[removeIndex] = nextNode;
-		}
-		
-		if (nextNode != null) {
-			nextNode.setPrevious(prevNode); // the next node's previous now refers to the previous node
-		}
-		// now nothing refers to the current node
-		
-		// creates a dummy node so the current node value can be retained
-		HashNode returnNode = new HashNode(currentNode.getIndex(), currentNode.getKey(), currentNode.getValue());
-		currentNode = null; // safely sets the target node to null
-		
-		--numberOfElements;
-//print();
-		return (ValueType) returnNode.getValue();
-	}
-
-	@Override
-	public void clear() {
-		// removes all key-value pairs from the HashTableMap
-		for (int i=0; i<myArray.length; ++i) {
-			myArray[i] = null;
-		}
-		
-		numberOfElements = 0;
-	}
-	
-	
-	
-	private boolean needsToGrow() {
-		if (size() >= 0.8 * myArray.length) {
-			return true;
-		}
-		return false;
-	}
-
-	private void grow() {
-		// doubles and rehashes whenever its load capacity is >= 80%
-		HashNode[] newArray = new HashNode[myArray.length * 2];
-		
-		// iterates through every index
-		for (int i=0; i<myArray.length; ++i) {
-			HashNode currentNode = myArray[i];
-			
-			// iterates through every chain
-			while (currentNode != null) {
-				KeyType currentKey = (KeyType) currentNode.getKey();
-				ValueType currentValue = (ValueType) currentNode.getValue();
-				
-				int newIndex = Math.abs(currentKey.hashCode()) % newArray.length;
-				HashNode newNode = new HashNode(newIndex, currentKey, currentValue);
-				
-				if (newArray[newIndex] == null) {
-					// adds the new node right at the index
-					newArray[newIndex] = newNode;
-				}
-				else {
-					// iterates to the end of the new chain and connects the new node
-					HashNode currentNewNode = newArray[newIndex];
-					
-					while(currentNewNode.getNext() != null) {
-						currentNewNode = currentNewNode.getNext();
-					}
-					// after exiting, currentNewNode refers to the node at the current end of the chain
-					
-					// links the end of the chain to the new end of the chain
-					currentNewNode.setNext(newNode);
-					newNode.setPrevious(currentNewNode);
-				}
-				
-				currentNode = currentNode.getNext();
+		if (!containsKey(key))
+			return null;
+		int index = getListIndex(key);
+		for (int i = 0; i < hashTable[index].size(); i++) {
+			if (hashTable[index].get(i).getKey().equals(key)) {
+				ValueType desVal = hashTable[index].get(i).getValue();
+				hashTable[index].remove(i);
+				size--;
+				return desVal;
 			}
 		}
-		
-		this.myArray = newArray;
+		return null;
 	}
 
+	/**
+	 * clears the hashtable
+	 */
+	public void clear() {
+		for (int i = 0; i < hashTable.length; i++) {
+			for (int j = 0; j < hashTable[i].size(); j++) {
+				hashTable[i].clear();
+				size = 0;
+			}
+		}
+	}
+
+	/**
+	 * used this method to debug earlier
+	 */
+	public void printMap() {
+		for (int i = 0; i < hashTable.length; i++) {
+			for (int j = 0; j < hashTable[i].size(); j++) {
+				System.out.println(hashTable[i].get(j).getKey().toString());
+			}
+		}
+
+	}
+
+	
+	
 	/*
 	 * author: Alex
 	 * gets toString for each user
@@ -225,22 +193,4 @@ public class HashTableMap<KeyType, ValueType> implements MapADT<KeyType, ValueTy
 		return string;
 
 	}
-	
-//	private void print() {
-//		// prints out the current state of the HashTableMap in an easily understandable format
-//		System.out.println();
-//		System.out.println("Size: " + size());
-//		
-//		for (int i=0; i<myArray.length; ++i) {
-//			System.out.print(i + ": ");
-//			
-//			HashNode currentNode = myArray[i];
-//			while (currentNode != null) {
-//				System.out.print("<" + currentNode.getKey().toString() + " , " + currentNode.getValue().toString() +  "> ");
-//				currentNode = currentNode.getNext();
-//			}
-//			System.out.println();
-//		}
-//		System.out.println();
-//	}
 }
