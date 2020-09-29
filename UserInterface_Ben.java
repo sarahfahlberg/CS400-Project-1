@@ -169,18 +169,19 @@ public class UserInterface_Ben {
         if (input.equals("1")) {
             loggedIn = false;
             System.out.println("See you next time!");
+            saveBank();
             driver();
 
         } else if (input.equals("2")) {
             loggedIn = false;
-            driver();
+            loggedInScreen(scnr, user);
         } else {
             System.out.println("Please choose a valid option");
             logOut(scnr);
         }
 
 
-
+        
     }
 
 
@@ -245,6 +246,7 @@ public class UserInterface_Ben {
                 
             } catch (NoSuchElementException e) {
                 System.out.println(e);
+                viewAccounts(scnr, user);
             }
 
         }
@@ -263,8 +265,22 @@ public class UserInterface_Ben {
 
     public static void openAccount(Scanner scnr, User user) {
         System.out.println("What would you like the name of the account to be?: ");
-        String accountName = scnr.nextLine().trim();
+        
+        String accountName = "";
+        boolean accountNameValid = false;
+        while (!accountNameValid) {
+           accountName = scnr.nextLine().trim();
+            if (accountName.contains(" ")) {
+                System.out.println("Please make sure your account name has no spaces: ");
+                continue;
 
+            }
+            accountNameValid = true;
+        }
+        
+        
+        
+        
         System.out.println("You'd like to name this account " + accountName + "?");
         System.out.println("1. Yes");
         System.out.println("2. No");
@@ -387,7 +403,7 @@ public class UserInterface_Ben {
             bank = DataAlex.readFile();
         }
         catch(Exception e) {
-            System.out.print(e);
+            e.printStackTrace();
             bank = new BankATM();
         }
     }
@@ -397,7 +413,7 @@ public class UserInterface_Ben {
 
 
         driver();
-        saveBank();
+        
     }
 
 
