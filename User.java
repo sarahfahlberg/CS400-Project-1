@@ -105,5 +105,19 @@ public class User {
 		s += "\n";
 		return s; 
 	}
+	
+	/*
+	 * Returns string of 
+	 * accountName accountBalance
+	 */
+	public String toString2() {
+	    String s = "";
+	    s += accounts.toString();
 
+	    return s; 
+	}
 }
+
+
+
+
