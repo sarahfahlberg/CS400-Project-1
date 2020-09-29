@@ -1,5 +1,3 @@
-
-
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 
@@ -218,7 +216,8 @@ public class BankInterface_Matt {
 
     System.out.println("Please select an option: \n" 
     + "(1) Log in \n" 
-    + "(2) Create account");
+    + "(2) Create account \n"
+    + "(3) Quit");
     
     if (scnr.hasNextInt()) {
 
@@ -228,6 +227,10 @@ public class BankInterface_Matt {
 
         case 2:
           createUser(atm);
+          
+        case 3:
+          DataAnish.saveToFile(atm);
+          System.exit(0);
 
         default:
           System.out.println("Invalid input.");
@@ -253,8 +256,10 @@ public class BankInterface_Matt {
     return input;
   }
   
+  
   public static void main(String args[]) {
     BankATM atm = new BankATM();
+    DataAnish.loadFromFile(atm);
     mainMenu(atm);
   }
 
