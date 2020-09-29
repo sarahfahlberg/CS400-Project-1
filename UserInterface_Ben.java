@@ -17,7 +17,11 @@ public class UserInterface_Ben {
     private static User user;
     private static String username = "";
 
-
+    /**
+     * Helps the user to create an account and store it in BankATM
+     * 
+     * @param scnr - used to read user input
+     */
     public static void createAccount(Scanner scnr) {
 
 
@@ -93,7 +97,11 @@ public class UserInterface_Ben {
     }
 
 
-
+    /**
+     * Lets the user log-in to their account, and pulls up their personalized
+     * login screen
+     * @param scnr
+     */
     public static void logIn(Scanner scnr) {
 
 
@@ -122,7 +130,13 @@ public class UserInterface_Ben {
     }
 
 
-
+    /**
+     * Lets the user add money to the account of
+     * their choice
+     * 
+     * @param scnr - reads user input
+     * @param account - account to add money to
+     */
     public static void addMoney(Scanner scnr, Account account) {
 
 
@@ -138,7 +152,13 @@ public class UserInterface_Ben {
 
 
     }
-
+    /**
+     * Lets the user remove money from the account
+     * of their choice
+     * 
+     * @param scnr - reads user input
+     * @param account - account to withdraw money from
+     */
     public static void removeMoney(Scanner scnr, Account account) {
         
 
@@ -156,7 +176,12 @@ public class UserInterface_Ben {
         
 
     }
-
+    /**
+     * Logs out the user from their account and takes them back
+     * to the home screen.
+     * 
+     * @param scnr - reads user input
+     */
     public static void logOut(Scanner scnr) {
 
         System.out.println("Are you sure you would like to log out? ");
@@ -183,7 +208,14 @@ public class UserInterface_Ben {
         
     }
 
-
+    /**
+     * Personal screen for users to interact
+     * with their account. Users can only access this
+     * with the correct username and password
+     * 
+     * @param scnr
+     * @param user
+     */
     public static void loggedInScreen(Scanner scnr, User user) {
 
         System.out.println("Welcome " + username);
@@ -211,7 +243,13 @@ public class UserInterface_Ben {
 
     }
 
-
+    /**
+     * Lets the user interact with their bank accounts
+     * and add or withdraw money from an account, or remove an account
+     * entirely
+     * @param scnr - reads user input
+     * @param user - User which is logged in and interacting with the account
+     */
     public static void viewAccounts(Scanner scnr, User user) {
         System.out.println();
         printAccounts(user);
@@ -288,7 +326,13 @@ public class UserInterface_Ben {
 
 
     }
-
+    /**
+     * Lets the user open a bank account in which they can name,
+     * then add or remove money from.
+     * 
+     * @param scnr - reads user input
+     * @param user - user which the account will be added to
+     */
     public static void openAccount(Scanner scnr, User user) {
         System.out.println("What would you like the name of the account to be?: ");
         
@@ -333,12 +377,22 @@ public class UserInterface_Ben {
 
     }
 
-
+    /**
+     * Prints out the users account names and balances
+     * 
+     * @param user - user whose accounts will be printed
+     */
     public static void printAccounts(User user) {
         System.out.println(user.toString2());
 
     }
 
+    /**
+     * Lets the user change their password
+     * 
+     * @param scnr - reads user input
+     * @param user - user changing their password
+     */
     public static void changePassword(Scanner scnr, User user) {
 
         System.out.println("Please type in your current password: ");
@@ -381,7 +435,10 @@ public class UserInterface_Ben {
 
     }
 
-
+    /**
+     * Home screen and driver of the program.
+     * Where the user starts and ends.
+     */
     public static void driver() {
         Scanner scnr = new Scanner(System.in);
         System.out.println("Welcome to Java ATM");
@@ -412,7 +469,9 @@ public class UserInterface_Ben {
 
 
     }
-
+    /**
+     * Saves the bank to a file
+     */
     public static void saveBank() {
 
         try{
@@ -423,7 +482,9 @@ public class UserInterface_Ben {
         }
 
     }
-
+    /**
+     * Loads a previous bank into the program
+     */
     public static void loadBank() {
         try{
             bank = DataAlex.readFile();
@@ -434,6 +495,10 @@ public class UserInterface_Ben {
         }
     }
 
+    /**
+     * Calls the driver
+     * @param args
+     */
     public static void main(String[] args) {
         loadBank();
 
