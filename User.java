@@ -12,7 +12,7 @@ import java.util.NoSuchElementException;
 public class User {
 	private String username;
 	private int hashedPassword;
-	private HashTableMap<String, Account> accounts;
+	private HashTableMapPrint<String, Account> accounts;
 	
 	/**
 	 * Constructor for new user
@@ -22,7 +22,7 @@ public class User {
 	public User (String username, int hashedPassword) {
 		this.username = username;
 		this.hashedPassword = hashedPassword;
-		accounts = new HashTableMap<>();
+		accounts = new HashTableMapPrint<>();
 	}
 	
 	/**
