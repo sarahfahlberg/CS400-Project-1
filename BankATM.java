@@ -9,6 +9,10 @@
 
 import java.util.NoSuchElementException;
 
+/**
+ * BankATM class acts as a functioning bank that enables user to create an account and bankAccount
+ * @author sarahfahlberg
+ */
 public class BankATM {
 	private HashTableMapPrint<String, User> userHashTable;
 	
