@@ -475,12 +475,12 @@ public class TestFunctions {
 	
 	static BankATM emptyBank = new BankATM();
 	static BankATM normalBank = new BankATM();
-//	static String username = "Username";
-//	static int hashedPassword = 5;
-//	static User user1 = new User(username, hashedPassword);
 	static String username2 = "Username2";
 	static int hashedPassword2 = 10;
 	static User user2 = new User(username2, hashedPassword2);
+	static String username3 = "Username3";
+	static int hashedPassword3 = 15;
+	static User user3 = new User(username3, hashedPassword3);
 	
 	/**
 	 * Asserts BankATM.java constructor functions properly.
@@ -511,8 +511,8 @@ public class TestFunctions {
 		
 		// asserts account creation with a unique username does NOT throw an exception
 		try {
-			normalBank.addNewUser(username, hashedPassword);
 			normalBank.addNewUser(username2, hashedPassword2);
+			normalBank.addNewUser(username3, hashedPassword3);
 		} catch (IllegalArgumentException e) {
 // ERROR 1
 			passing = false;
@@ -521,7 +521,7 @@ public class TestFunctions {
 		
 		// asserts account creation with a non-unique username throws an exception
 		try {
-			normalBank.addNewUser(username, hashedPassword);
+			normalBank.addNewUser(username2, hashedPassword2);
 			
 // ERROR 2
 			// these lines execute if an exception is NOT thrown
@@ -545,7 +545,7 @@ public class TestFunctions {
 		
 		// assert a valid removeUser() does NOT throw an exception and returns the correct user
 		try {
-			if (!normalBank.removeUser(username, hashedPassword).equals(user1)) {
+			if (!(normalBank.removeUser(username2, hashedPassword2).toString().equals(user2.toString()))) {
 // ERROR 1
 				passing = false;
 				System.out.println(ERROR_1 + new Throwable().getStackTrace()[0].getMethodName());
@@ -558,7 +558,7 @@ public class TestFunctions {
 		
 		// assert an invalid removeUser() throws an exception
 		try {
-			normalBank.removeUser(username, hashedPassword);
+			normalBank.removeUser(username2, hashedPassword2);
 			
 // ERROR 3
 			// these lines execute if an exception is NOT thrown
@@ -582,8 +582,7 @@ public class TestFunctions {
 		
 		// asserts a valid getUser() does NOT throw an exception and returns the correct user
 		try {
-			User temp = normalBank.getUser(username2, hashedPassword2);
-			if (!temp.equals(user2)) {
+			if (!normalBank.getUser(username3, hashedPassword3).toString().equals(user3.toString())) {
 // ERROR 1
 				passing = false;
 				System.out.println(ERROR_1 + new Throwable().getStackTrace()[0].getMethodName());
@@ -596,7 +595,7 @@ public class TestFunctions {
 		
 		// asserts an invalid getUser() throws an exception
 		try {
-			normalBank.getUser(username, hashedPassword);
+			normalBank.getUser(username2, hashedPassword2);
 			
 // ERROR 3
 			// these lines execute when an exception is NOT thrown
@@ -670,7 +669,7 @@ public class TestFunctions {
 	public static boolean BankATM_toString() {
 		boolean passing = true;
 		
-		if (!normalBank.toString().contains(username)) {
+		if (!normalBank.toString().contains(username3)) {
 // ERROR 1
 			passing = false;
 			System.out.println(ERROR_1 + new Throwable().getStackTrace()[0].getMethodName());
