@@ -1,5 +1,3 @@
-import java.util.NoSuchElementException;
-
 // --== CS400 File Header Information ==--
 // Name: Gabriel Friederichs
 // Email: ghfriederich@wisc.edu
@@ -11,6 +9,13 @@ import java.util.NoSuchElementException;
 //					drastically easier to find. These are not accidental breaches of coding
 //					guidelines.
 
+import java.util.NoSuchElementException;
+
+/**
+ * This class contains all the functions which are run in TestDriver.java
+ * 
+ * @author Gabriel
+ */
 public class TestFunctions {
 	static final String ERROR_1 = ">> Error [1] in ";
 	static final String ERROR_2 = ">> Error [2] in ";

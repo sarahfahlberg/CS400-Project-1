@@ -1,5 +1,17 @@
+// --== CS400 File Header Information ==--
+// Name: Gabriel Friederichs
+// Email: ghfriederich@wisc.edu
+// Team: CD
+// TA: Yeping
+// Lecturer: Gary Dahl
+// Notes to Grader: N/A
 
-
+/**
+ * This class runs all functions in TestFunctions.java in order to verify that the project will work.
+ * 
+ * @author Gabe
+ *
+ */
 public class TestDriver extends TestFunctions {
 	public static void main(String[] args) {
 		System.out.println("------------------");
