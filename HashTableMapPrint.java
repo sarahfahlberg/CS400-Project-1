@@ -1,5 +1,3 @@
-
-
 // --== CS400 File Header Information ==--
 // Name: Sarah Fahlberg
 // Email: sfahlberg@wisc.edu
@@ -9,6 +7,10 @@
 // Lecturer: Gary Dahl
 // Notes to Grader: collaboration between Sarah Fahlberg and Alex Wu
 
+/**
+ * Child class of HashTableMap that enables printing of the HashTable
+ * @author sarahfahlberg and alexwu
+ */
 public class HashTableMapPrint<KeyType,ValueType> extends HashTableMap<KeyType,ValueType> {
 	/*
 	 * author: Alex
