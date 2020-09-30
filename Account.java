@@ -8,6 +8,10 @@
 // Lecturer: Gary Dahl
 // Notes to Grader: written by Sarah Fahlberg
 
+/**
+ * Account that stores a balance and allows for withdrawls and deposits
+ * @author sarahfahlberg and contributions from Ben Radosevich
+ */
 public class Account {
 	private String accountName;
 	private double balance;
