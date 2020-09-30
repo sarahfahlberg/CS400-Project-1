@@ -10,14 +10,14 @@
 import java.util.NoSuchElementException;
 
 public class BankATM {
-	private HashTableMap<String, User> userHashTable;
+	private HashTableMapPrint<String, User> userHashTable;
 	
 	/**
 	 * Creates a new BankATM
 	 * @param bankPassword
 	 */
 	public BankATM() {
-		userHashTable = new HashTableMap<>();
+		userHashTable = new HashTableMapPrint<>();
 	}
 	
 	/**
